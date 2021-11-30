@@ -1,0 +1,50 @@
+import itertools, string, time, pandas, random
+import matplotlib.pyplot as plt
+import numpy as np
+
+def guess_password():
+    numbers = string.digits
+
+    for i in range(1, 11):
+        random_real = [(''.join(random.choice(string.digits) for i in range(3))),
+                (''.join(random.choice(string.digits) for i in range(4))),
+                (''.join(random.choice(string.digits) for i in range(5))),
+                (''.join(random.choice(string.digits) for i in range(6))),
+                (''.join(random.choice(string.digits) for i in range(7)))]
+        real = ['555', '5555', '55555', '555555', '5555555']
+
+        st = time.perf_counter()
+        take_time = []
+        for password_length in range(3, max_len):
+            for guess in itertools.product(numbers, repeat=password_length):
+                guess = ''.join(guess)
+                if guess == real[password_length - 3]:
+                    et = time.perf_counter()
+                    ut = et - st
+                    take_time.append(ut)
+                    print(f"password is {guess}.  The time takes {ut}s")
+                print(f"{i} Trail", guess, " need to reach ", real[password_length-3])
+        dict[i] = take_time
+
+def graph(dict):
+    df = pandas.DataFrame(dict)
+    print('=' * 60)
+    print(df)
+    df.to_csv('data.csv')
+
+    password_length = np.arange(3, max_len)
+
+    plt.title("Winston's Science Fair")
+    plt.xlabel("Length of Password")
+    plt.ylabel("Second")
+    plt.plot(password_length, df, marker='o', markerfacecolor="red")
+    plt.grid(True)
+    plt.savefig('data.png')
+    plt.show()
+
+max_len = 8
+take_time = []
+dict = {}
+guess_password()
+print(dict)
+# graph(dict)
